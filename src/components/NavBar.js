@@ -77,37 +77,33 @@ export default function App() {
                 </NavbarItem>
 
                 <NavbarItem>
-                    <span onClick={() => openMenu()} className={rotaAtual === "/contato" ? "text-blue-500 cursor-pointer" : "cursor-pointer"}>Contato</span>
+                    <span onClick={() => openMenu()} className={rotaAtual === "/contato" ? "text-blue-500 cursor-pointer" : "cursor-pointer text-white"}>Contato</span>
                 </NavbarItem>
             </NavbarContent>
-            {/* <NavbarContent justify="end">
-                <NavbarItem className="hidden lg:flex">
-                    <Link href="#">Login</Link>
-                </NavbarItem>
-                <NavbarItem>
-                    <Button as={Link} color="primary" href="#" variant="flat">
-                        Sign Up
-                    </Button>
-                </NavbarItem>
-            </NavbarContent> */}
-            <NavbarMenu>
+            <NavbarMenu className='pt-9'>
                 {menuItems.map((item, index) => (
                     <NavbarMenuItem key={`${item.id}-${index}`}>
                         {index === 2 ? (
-                            <span onClick={() => openMenu()} className="cursor-pointer text-blue-500">{item.paginaNome}</span>
+                            // Para o item "Contato", que não tem rota
+                            <span
+                                onClick={openMenu}
+                                className="cursor-pointer text-blue-500 w-full text-center text-[16px] "
+                            >
+                                {item.paginaNome}
+                            </span>
                         ) : (
+                            // Para os demais itens com rota
                             <Link
-                                className="w-full"
+                                className="w-full text-center"
                                 href={item.rota}
-                                size="lg"
                             >
                                 {item.paginaNome}
                             </Link>
                         )}
                     </NavbarMenuItem>
                 ))}
-
             </NavbarMenu>
+
             <ModalContato
                 onClose={() => openMenu()}
                 isOpen={menuOpen}
