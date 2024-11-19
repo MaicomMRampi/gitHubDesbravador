@@ -7,7 +7,9 @@ import { IoSearch } from "react-icons/io5";
 import { useState } from 'react';
 import axios from 'axios';
 import { Alert } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 function App() {
+  const navigate = useNavigate()
   const [userName, setUsername] = useState()
   const [message, setMessage] = useState()
   const [messageTipo, setMessageTipo] = useState()
@@ -21,35 +23,61 @@ function App() {
       if (detailUser.status === 200 && reposiUser.status === 200) {
         setMessage('Usuario encontrado, indo para detalhes ...')
         setMessageTipo('success')
+        setTimeout(() => {
+          navigate('/detalhesperfil', { state: { detailUser: detailUser.data, reposiUser: reposiUser.data } })
+        }, 2000)
       }
       console.log("🚀 ~ buscaDados ~ detailUser", reposiUser)
     } catch (error) {
       setMessage('Usuario não encontrado.')
       setMessageTipo('error')
     }
+    setTimeout(() => {
+      setMessage('')
+      setMessageTipo('')
+    }, 3000)
+
   }
 
 
   return (
-    <div className='w-full'>
+    <div className='w-full pt-8'>
       <h2 className='text-blue-500 font-bold text-4xl text-center'> GitBusca</h2>
-      <p className='text-center text-default-400'>Pesquise e descubra perfis do GitHub com informações detalhadas</p>
-      <div className='w-[60%]  mx-auto bg-[#161b22] mt-4 rounded-lg' >
-        <div className='grid grid-cols-9 gap-4  p-6' >
-          <div className='col-span-6 '>
+      <p className='text-center text-default-400 py-2'>Pesquise e descubra perfis do GitHub com informações detalhadas</p>
+      <div className="w-full px-4 sm:w-[80%] md:w-[60%] mx-auto bg-[#161b22] mt-4 rounded-lg shadow-lg">
+        <div className="grid grid-cols-1 md:grid-cols-9 gap-4 p-6">
+          {/* Campo de Input */}
+          <div className="md:col-span-6">
             <Input
               onChange={(e) => setUsername(e.target.value)}
-              placeholder='Digite o username para pesquisar'
+              placeholder="Digite o username para pesquisar"
               startContent={<IoSearch />}
+              className="w-full"
             />
           </div>
-          <div className='col-span-3'>
-            <Button onClick={buscaDados} fullWidth className='text-white text-lg justify-center flex' color='success' endContent={<IoSearch size={18} />} >Buscar</Button>
+
+          {/* Botão de Buscar */}
+          <div className="md:col-span-3 flex">
+            <Button
+              onClick={buscaDados}
+              fullWidth
+              className="text-white text-lg "
+              color="success"
+              endContent={<IoSearch size={21} />}
+            >
+              Buscar
+            </Button>
           </div>
         </div>
       </div>
+
       <div className=' pt-4 w-[60%]  mx-auto'>
-        <Alert severity={messageTipo}>{message}</Alert>
+        {message ?
+          (
+            <Alert severity={messageTipo}>{message}</Alert>
+          ) :
+          null
+        }
       </div>
     </div>
   );
